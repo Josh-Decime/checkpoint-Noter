@@ -2,11 +2,11 @@ import { Schema } from "mongoose";
 
 export const NotebookSchema = new Schema(
     {
-        Title: { type: String, required: true, minLength: 3, maxLength: 25 },
-        Icon: { type: String, required: true },
-        Color: { type: String },
-        CoverImg: { type: String, required: true, minLength: 1, maxLength: 500 },
-        CreatorId: { type: Schema.Types.ObjectId, required: true, ref: 'Account' }
+        title: { type: String, required: true, minLength: 3, maxLength: 25 },
+        icon: { type: String, required: true },
+        color: { type: String },
+        coverImg: { type: String, required: true, minLength: 1, maxLength: 500 },
+        creatorId: { type: Schema.Types.ObjectId, required: true, ref: 'Account' }
     },
     {
         timestamps: true,

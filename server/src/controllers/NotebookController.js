@@ -1,4 +1,4 @@
-import auth0provider from "@bcwdev/auth0provider";
+import { Auth0Provider } from "@bcwdev/auth0provider";
 import { notebookService } from "../services/NotebookService.js";
 import BaseController from "../utils/BaseController.js";
 
@@ -8,13 +8,14 @@ export class NotebookController extends BaseController {
         this.router
             .get('', this.getAllNotebooks)
 
-            .use(auth0provider.getAuthorizedUserInfo)
+            .use(Auth0Provider.getAuthorizedUserInfo)
 
             .post('', this.createNotebook)
     }
     async getAllNotebooks(request, response, next) {
         try {
             const notebooks = await notebookService.getAllNotebooks()
+            response.send(notebooks)
         } catch (error) {
             next(error)
         }
