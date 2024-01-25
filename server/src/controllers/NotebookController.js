@@ -7,6 +7,7 @@ export class NotebookController extends BaseController {
         super('api/notebooks')
         this.router
             .get('', this.getAllNotebooks)
+            .get('/:notebookId', this.getNotebookById)
 
             .use(Auth0Provider.getAuthorizedUserInfo)
 
@@ -16,6 +17,15 @@ export class NotebookController extends BaseController {
         try {
             const notebooks = await notebookService.getAllNotebooks()
             response.send(notebooks)
+        } catch (error) {
+            next(error)
+        }
+    }
+    async getNotebookById(request, response, next) {
+        try {
+            const notebookId = request.params.notebookId
+            const notebook = await notebookService.getNotebookById(notebookId)
+            response.send(notebook)
         } catch (error) {
             next(error)
         }
