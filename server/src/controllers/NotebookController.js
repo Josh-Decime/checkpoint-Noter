@@ -1,6 +1,7 @@
 import { Auth0Provider } from "@bcwdev/auth0provider";
 import { notebookService } from "../services/NotebookService.js";
 import BaseController from "../utils/BaseController.js";
+import { entryService } from "../services/EntryService.js";
 
 export class NotebookController extends BaseController {
     constructor() {
@@ -8,6 +9,7 @@ export class NotebookController extends BaseController {
         this.router
             .get('', this.getAllNotebooks)
             .get('/:notebookId', this.getNotebookById)
+            .get(':/notebookId/entries', this.getEntriesInNotebook)
 
             .use(Auth0Provider.getAuthorizedUserInfo)
 
@@ -41,4 +43,16 @@ export class NotebookController extends BaseController {
             next(error)
         }
     }
+
+    // FIXME I am getting an unauthorized error when running postman tests
+    async getEntriesInNotebook(request, response, next) {
+        try {
+            const notebookId = request.params.notebookId
+            const entries = await entryService.getEntriesInNotebook(notebookId)
+            response.send(entries)
+        } catch (error) {
+            next(error)
+        }
+    }
+
 }
