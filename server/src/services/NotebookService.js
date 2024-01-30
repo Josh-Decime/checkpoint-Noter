@@ -37,8 +37,14 @@ class NotebookService {
         return `${notebook.title} has been deleted`
     }
 
-    editNotebook(notebookId, updateData) {
-        throw new Error("Method not implemented.");
+    async editNotebook(notebookId, updateData) {
+        const notebook = await this.getNotebookById(notebookId)
+        notebook.title = updateData.title ? updateData.title : notebook.title
+        notebook.icon = updateData.icon ? updateData.icon : notebook.icon
+        notebook.color = updateData.color ? updateData.color : notebook.color
+        notebook.coverImg = updateData.coverImg ? updateData.coverImg : notebook.color
+        await notebook.save()
+        return notebook
     }
 
 
