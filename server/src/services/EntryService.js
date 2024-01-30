@@ -21,7 +21,7 @@ class EntryService {
     }
 
     async getEntriesInNotebook(notebookId) {
-        const entries = await dbContext.Entries.find({ notebookId: notebookId }).populate('creator', 'name picture')
+        const entries = await dbContext.Entries.find({ notebookId: notebookId })
         return entries
     }
 

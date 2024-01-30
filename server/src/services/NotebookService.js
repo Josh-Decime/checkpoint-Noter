@@ -3,9 +3,10 @@ import { BadRequest, Forbidden } from "../utils/Errors.js";
 
 
 class NotebookService {
-    // TODO postman wants to find only notebooks by the creator
-    async getAllNotebooks() {
-        const notebooks = await dbContext.Notebooks.find().populate('creator', 'name picture')
+
+
+    async getMyNotebooks(userId) {
+        const notebooks = await dbContext.Notebooks.find({ creatorId: userId }).populate('creator', 'name picture')
         return notebooks
     }
 
@@ -36,7 +37,9 @@ class NotebookService {
         return `${notebook.title} has been deleted`
     }
 
-
+    editNotebook(notebookId, updateData) {
+        throw new Error("Method not implemented.");
+    }
 
 
 }

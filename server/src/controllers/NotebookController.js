@@ -7,18 +7,21 @@ export class NotebookController extends BaseController {
     constructor() {
         super('api/notebooks')
         this.router
-            .get('', this.getAllNotebooks)
             .get('/:notebookId', this.getNotebookById)
             .get('/:notebookId/entries', this.getEntriesInNotebook)
 
             .use(Auth0Provider.getAuthorizedUserInfo)
 
+            .get('', this.getMyNotebooks)
             .post('', this.createNotebook)
             .delete('/:notebookId', this.deleteNotebook)
+            .put('/:notebookId', this.editNotebook)
     }
-    async getAllNotebooks(request, response, next) {
+
+    async getMyNotebooks(request, response, next) {
         try {
-            const notebooks = await notebookService.getAllNotebooks()
+            const userId = request.userInfo.id
+            const notebooks = await notebookService.getMyNotebooks(userId)
             response.send(notebooks)
         } catch (error) {
             next(error)
@@ -67,6 +70,16 @@ export class NotebookController extends BaseController {
         }
     }
 
+    async editNotebook(request, response, next) {
+        try {
+            const notebookId = request.params.notebookId
+            const updateData = request.body
+            const notebook = await notebookService.editNotebook(notebookId, updateData)
+            response.send(notebook)
+        } catch (error) {
+            next(error)
+        }
+    }
 
 
 
