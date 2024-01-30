@@ -9,11 +9,12 @@ export class NotebookController extends BaseController {
         this.router
             .get('', this.getAllNotebooks)
             .get('/:notebookId', this.getNotebookById)
-            .get(':/notebookId/entries', this.getEntriesInNotebook)
+            .get('/:notebookId/entries', this.getEntriesInNotebook)
 
             .use(Auth0Provider.getAuthorizedUserInfo)
 
             .post('', this.createNotebook)
+            .delete('/:notebookId', this.deleteNotebook)
     }
     async getAllNotebooks(request, response, next) {
         try {
@@ -54,5 +55,19 @@ export class NotebookController extends BaseController {
             next(error)
         }
     }
+
+    async deleteNotebook(request, response, next) {
+        try {
+            const notebookId = request.params.notebookId
+            const userId = request.userInfo.id
+            const message = await notebookService.deleteNotebook(notebookId, userId)
+            response.send(message)
+        } catch (error) {
+            next(error)
+        }
+    }
+
+
+
 
 }

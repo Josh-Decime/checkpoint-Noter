@@ -3,7 +3,6 @@ import { BadRequest, Forbidden } from "../utils/Errors.js";
 
 
 class NotebookService {
-
     // TODO postman wants to find only notebooks by the creator
     async getAllNotebooks() {
         const notebooks = await dbContext.Notebooks.find().populate('creator', 'name picture')
@@ -24,6 +23,19 @@ class NotebookService {
         await notebook.populate('creator', 'name picture')
         return notebook
     }
+
+    async deleteNotebook(notebookId, userId) {
+        const notebook = await dbContext.Notebooks.findById(notebookId)
+        if (!notebook) {
+            throw new BadRequest(`invalid id: ${notebook}`)
+        }
+        if (notebook.creatorId != userId) {
+            throw new Forbidden('You can not do that')
+        }
+        await notebook.deleteOne()
+        return `${notebook.title} has been deleted`
+    }
+
 
 
 
