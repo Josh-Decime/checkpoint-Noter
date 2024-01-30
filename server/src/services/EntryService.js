@@ -37,5 +37,10 @@ class EntryService {
         return `Entry deleted: ${entryId}`
     }
 
+    async getMyEntries(userId) {
+        const entries = await dbContext.Entries.find({ creatorId: userId }).populate('notebook')
+        return entries
+    }
+
 }
 export const entryService = new EntryService()

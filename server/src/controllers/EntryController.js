@@ -9,6 +9,7 @@ export class EntryController extends BaseController {
             .use(Auth0Provider.getAuthorizedUserInfo)
             .post('', this.createEntry)
             .delete('/:entryId', this.deleteEntry)
+            .get('', this.getMyEntries)
     }
 
     async createEntry(request, response, next) {
@@ -18,6 +19,16 @@ export class EntryController extends BaseController {
             const userId = request.userInfo.id
             const entry = await entryService.createEntry(entryData, userId)
             response.send(entry)
+        } catch (error) {
+            next(error)
+        }
+    }
+
+    async getMyEntries(request, response, next) {
+        try {
+            const userId = request.userInfo.id
+            const entries = await entryService.getMyEntries(userId)
+            response.send(entries)
         } catch (error) {
             next(error)
         }
