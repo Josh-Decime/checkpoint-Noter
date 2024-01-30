@@ -45,7 +45,7 @@ export class NotebookController extends BaseController {
         }
     }
 
-    // FIXME I am getting an unauthorized error when running postman tests
+
     async getEntriesInNotebook(request, response, next) {
         try {
             const notebookId = request.params.notebookId

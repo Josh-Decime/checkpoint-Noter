@@ -25,5 +25,17 @@ class EntryService {
         return entries
     }
 
+    async deleteEntry(entryId, userId) {
+        const entry = await dbContext.Entries.findById(entryId)
+        if (!entry) {
+            throw new BadRequest(`Invalid Id: ${entryId}`)
+        }
+        if (entry.creatorId != userId) {
+            throw new Forbidden('You can not do that')
+        }
+        await entry.deleteOne()
+        return `Entry deleted: ${entryId}`
+    }
+
 }
 export const entryService = new EntryService()

@@ -8,7 +8,9 @@ export class EntryController extends BaseController {
         this.router
             .use(Auth0Provider.getAuthorizedUserInfo)
             .post('', this.createEntry)
+            .delete('/:entryId', this.deleteEntry)
     }
+
     async createEntry(request, response, next) {
         try {
             const entryData = request.body
@@ -16,6 +18,19 @@ export class EntryController extends BaseController {
             const userId = request.userInfo.id
             const entry = await entryService.createEntry(entryData, userId)
             response.send(entry)
+        } catch (error) {
+            next(error)
+        }
+    }
+
+
+    // NOTE wrote this directly after delete notebook, cant test it until get requests work
+    async deleteEntry(request, response, next) {
+        try {
+            const entryId = request.params.entryId
+            const userId = request.userInfo.id
+            const message = await entryService.deleteEntry(entryId, userId)
+            response.send(message)
         } catch (error) {
             next(error)
         }
