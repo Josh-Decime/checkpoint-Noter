@@ -52,6 +52,11 @@ class EntryService {
         }
         entry.description = updateData.description ? updateData.description : entry.description
         entry.img = updateData.img != undefined ? updateData.img : entry.img
+
+        if (updateData.notebookId) {
+            entry.notebookId = updateData.notebookId
+            await entry.populate('notebook')
+        }
         await entry.save()
         return entry
     }
