@@ -8,6 +8,7 @@ class DbContext {
   Values = mongoose.model('Value', ValueSchema);
   Account = mongoose.model('Account', AccountSchema);
 
+  // would have been better if Notebooks & Notebook Entries & Entry matched
   Notebooks = mongoose.model('Notebook', NotebookSchema);
   Entries = mongoose.model('Entry', EntrySchema)
 }

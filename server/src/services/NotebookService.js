@@ -10,9 +10,9 @@ class NotebookService {
         return notebooks
     }
 
-    // TODO needs to populate entry count
+
     async getNotebookById(notebookId) {
-        const notebook = await dbContext.Notebooks.findById(notebookId).populate('creator', 'name picture')
+        const notebook = await dbContext.Notebooks.findById(notebookId).populate('creator', 'name picture').populate('entryCount')
         if (!notebook) {
             throw new BadRequest(`Invalid id: ${notebookId}`)
         }
