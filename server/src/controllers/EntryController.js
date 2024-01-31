@@ -10,6 +10,7 @@ export class EntryController extends BaseController {
             .post('', this.createEntry)
             .delete('/:entryId', this.deleteEntry)
             .get('', this.getMyEntries)
+            .put('/:entryId', this.editEntry)
     }
 
     async createEntry(request, response, next) {
@@ -35,13 +36,24 @@ export class EntryController extends BaseController {
     }
 
 
-    // NOTE wrote this directly after delete notebook, cant test it until get requests work
     async deleteEntry(request, response, next) {
         try {
             const entryId = request.params.entryId
             const userId = request.userInfo.id
             const message = await entryService.deleteEntry(entryId, userId)
             response.send(message)
+        } catch (error) {
+            next(error)
+        }
+    }
+
+    async editEntry(request, response, next) {
+        try {
+            const entryId = request.params.entryId
+            const updateData = request.body
+            const userId = request.userInfo.id
+            const entry = await entryService.editEntry(entryId, updateData, userId)
+            response.send(entry)
         } catch (error) {
             next(error)
         }

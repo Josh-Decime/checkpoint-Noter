@@ -42,5 +42,19 @@ class EntryService {
         return entries
     }
 
+    async editEntry(entryId, updateData, userId) {
+        const entry = await dbContext.Entries.findById(entryId)
+        if (!entry) {
+            throw new Error(`Invalid Id: ${entryId}`)
+        }
+        if (entry.creatorId != userId) {
+            throw new Forbidden('you can not do that')
+        }
+        entry.description = updateData.description ? updateData.description : entry.description
+        entry.img = updateData.img != undefined ? updateData.img : entry.img
+        await entry.save()
+        return entry
+    }
+
 }
 export const entryService = new EntryService()

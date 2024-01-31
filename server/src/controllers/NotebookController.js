@@ -74,7 +74,8 @@ export class NotebookController extends BaseController {
         try {
             const notebookId = request.params.notebookId
             const updateData = request.body
-            const notebook = await notebookService.editNotebook(notebookId, updateData)
+            const userId = request.userInfo.id
+            const notebook = await notebookService.editNotebook(notebookId, updateData, userId)
             response.send(notebook)
         } catch (error) {
             next(error)

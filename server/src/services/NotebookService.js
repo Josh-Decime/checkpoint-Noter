@@ -27,9 +27,6 @@ class NotebookService {
 
     async deleteNotebook(notebookId, userId) {
         const notebook = await dbContext.Notebooks.findById(notebookId)
-        if (!notebook) {
-            throw new BadRequest(`invalid id: ${notebook}`)
-        }
         if (notebook.creatorId != userId) {
             throw new Forbidden('You can not do that')
         }
@@ -37,8 +34,11 @@ class NotebookService {
         return `${notebook.title} has been deleted`
     }
 
-    async editNotebook(notebookId, updateData) {
+    async editNotebook(notebookId, updateData, userId) {
         const notebook = await this.getNotebookById(notebookId)
+        if (notebook.creatorId != userId) {
+            throw new Forbidden('you can not do that')
+        }
         notebook.title = updateData.title ? updateData.title : notebook.title
         notebook.icon = updateData.icon ? updateData.icon : notebook.icon
         notebook.color = updateData.color ? updateData.color : notebook.color
