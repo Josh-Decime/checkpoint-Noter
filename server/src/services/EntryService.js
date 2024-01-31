@@ -6,6 +6,9 @@ import { logger } from "../utils/Logger.js";
 class EntryService {
 
     async createEntry(entryData, userId) {
+        if (entryData.creatorId != userId) {
+            throw new Forbidden('You can not do that')
+        }
         if (entryData.notebookId) {
             const notebook = await notebookService.getNotebookById(entryData.notebookId)
             if (notebook.creatorId != userId) {
@@ -48,12 +51,16 @@ class EntryService {
             throw new Error(`Invalid Id: ${entryId}`)
         }
         if (entry.creatorId != userId) {
-            throw new Forbidden('you can not do that')
+            throw new Forbidden('You can not do that')
         }
         entry.description = updateData.description ? updateData.description : entry.description
         entry.img = updateData.img != undefined ? updateData.img : entry.img
 
         if (updateData.notebookId) {
+            const notebook = await notebookService.getNotebookById(updateData.notebookId)
+            if (notebook.creatorId != userId) {
+                throw new Forbidden('You can not do that')
+            }
             entry.notebookId = updateData.notebookId
             await entry.populate('notebook')
         }
