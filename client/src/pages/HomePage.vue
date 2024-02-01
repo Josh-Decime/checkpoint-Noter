@@ -1,5 +1,5 @@
 <template>
-  <div class="home flex-grow-1 d-flex flex-column align-items-center justify-content-center">
+  <!-- <div class="home flex-grow-1 d-flex flex-column align-items-center justify-content-center">
     <div class="home-card p-5 card align-items-center shadow rounded elevation-3">
       <img src="https://bcw.blob.core.windows.net/public/img/8600856373152463" alt="CodeWorks Logo"
         class="rounded-circle">
@@ -7,14 +7,43 @@
         Vue 3 Starter
       </h1>
     </div>
-  </div>
+  </div> -->
 </template>
 
 <script>
+import { onMounted, watchEffect } from 'vue';
+import Pop from '../utils/Pop.js';
+import { notebookService } from '../services/NotebookService.js';
+import { Account } from '../models/Account.js';
+import { accountService } from '../services/AccountService.js';
+import { AppState } from '../AppState.js';
+
 export default {
   setup() {
+
+    // onMounted(() => {
+    //   if (AppState.account.id) {
+    //     getMyNotebooks()
+    //   }
+    // })
+
+    watchEffect(() => {
+      AppState.account.id
+      if (AppState.account.id) {
+        getMyNotebooks()
+      }
+    })
+
+    async function getMyNotebooks() {
+      try {
+        await notebookService.getMyNotebooks()
+      } catch (error) {
+        Pop.error(error)
+      }
+    }
+
     return {
-      
+
     }
   }
 }
