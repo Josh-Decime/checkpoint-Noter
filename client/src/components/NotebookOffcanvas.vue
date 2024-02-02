@@ -36,11 +36,36 @@
 
 <script>
 import { AppState } from '../AppState';
-import { computed, ref, onMounted } from 'vue';
+import { computed, ref, onMounted, watch } from 'vue';
+import { notebookService } from '../services/NotebookService.js';
 import Pop from '../utils/Pop.js';
 export default {
     setup() {
+
+        // onMounted(() => {
+        //     if (AppState.account.id) {
+        //         getMyNotebooks()
+        //     }
+        // })
+
+        // NOTE when i used watchEffect it didn't work, everything broke, but when i use watch it works but the console has a vue warning telling me to use watchEffect lol
+        watch(() => {
+            AppState.account.id
+            if (AppState.account.id) {
+                getMyNotebooks()
+            }
+        })
+
+        async function getMyNotebooks() {
+            try {
+                await notebookService.getMyNotebooks()
+            } catch (error) {
+                Pop.error(error)
+            }
+        }
+
         return {
+
             notebooks: computed(() => AppState.notebooks),
             async createNotebook() {
                 try {

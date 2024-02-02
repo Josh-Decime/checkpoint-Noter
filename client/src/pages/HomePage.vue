@@ -27,20 +27,20 @@ export default {
     //   }
     // })
 
-    watchEffect(() => {
-      AppState.account.id
-      if (AppState.account.id) {
-        getMyNotebooks()
-      }
-    })
+    // watchEffect(() => {
+    //   AppState.account.id
+    //   if (AppState.account.id) {
+    //     getMyNotebooks()
+    //   }
+    // })
 
-    async function getMyNotebooks() {
-      try {
-        await notebookService.getMyNotebooks()
-      } catch (error) {
-        Pop.error(error)
-      }
-    }
+    // async function getMyNotebooks() {
+    //   try {
+    //     await notebookService.getMyNotebooks()
+    //   } catch (error) {
+    //     Pop.error(error)
+    //   }
+    // }
 
     return {
 
