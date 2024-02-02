@@ -6,7 +6,7 @@ class NotebookService {
 
 
     async getMyNotebooks(userId) {
-        const notebooks = await dbContext.Notebooks.find({ creatorId: userId }).populate('creator', 'name picture')
+        const notebooks = await dbContext.Notebooks.find({ creatorId: userId }).populate('creator', 'name picture').populate('entryCount')
         return notebooks
     }
 
