@@ -8,41 +8,46 @@
       </h1>
     </div>
   </div> -->
+  <section class="container-fluid">
+    <section class="row justify-content-center">
+
+
+      <div v-for="entry in entries" class="col-10">
+        <EntryCard :entry="entry" />
+      </div>
+
+    </section>
+  </section>
 </template>
 
 <script>
-import { onMounted, watchEffect } from 'vue';
+import { computed, onMounted, watchEffect } from 'vue';
 import Pop from '../utils/Pop.js';
 import { notebookService } from '../services/NotebookService.js';
 import { Account } from '../models/Account.js';
 import { accountService } from '../services/AccountService.js';
+import { entryService } from '../services/EntryService.js'
 import { AppState } from '../AppState.js';
 
 export default {
   setup() {
 
-    // onMounted(() => {
-    //   if (AppState.account.id) {
-    //     getMyNotebooks()
-    //   }
-    // })
+    onMounted(() => {
+      getMyEntries()
+    })
 
-    // watchEffect(() => {
-    //   AppState.account.id
-    //   if (AppState.account.id) {
-    //     getMyNotebooks()
-    //   }
-    // })
-
-    // async function getMyNotebooks() {
-    //   try {
-    //     await notebookService.getMyNotebooks()
-    //   } catch (error) {
-    //     Pop.error(error)
-    //   }
-    // }
+    async function getMyEntries() {
+      try {
+        await entryService.getMyEntries()
+      } catch (error) {
+        Pop.error(error)
+      }
+    }
 
     return {
+      entries: computed(() => {
+        return AppState.entries
+      }),
 
     }
   }
